@@ -16,6 +16,9 @@ import es.uniovi.raul.sies2csv.input.sies.SiesExcelLoader.InvalidStudentFormatEx
  */
 public class Main {
 
+    private static final int OK = 0;
+    private static final int ERROR = 1;
+
     public static void main(String[] args) {
 
         var parseResult = ArgumentsParser.parse(args);
@@ -27,17 +30,18 @@ public class Main {
         int exitCode;
         try {
 
-            exitCode = loadAndRun(argumentsOpt.get());
+            loadAndRun(argumentsOpt.get());
+            exitCode = OK;
 
         } catch (Exception e) {
             System.err.printf("%n[Error] %s%n", e.getMessage());
-            exitCode = Core.ERROR;
+            exitCode = ERROR;
         }
 
         System.exit(exitCode);
     }
 
-    private static int loadAndRun(Arguments arguments)
+    private static void loadAndRun(Arguments arguments)
             throws IOException, InvalidStudentFormatException, InvalidGroupFormatException {
 
         // load...
@@ -45,7 +49,7 @@ public class Main {
         var teacherGroupsOpt = loadTeacherGroups(Path.of(arguments.groupsFile));
 
         // ... and run (now you understand the name of the method)
-        return Core.run(allStudents, teacherGroupsOpt, Path.of(arguments.outputFile));
+        Core.run(allStudents, teacherGroupsOpt, Path.of(arguments.outputFile));
 
     }
 

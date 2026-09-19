@@ -12,22 +12,21 @@ import es.uniovi.raul.sies2csv.output.CsvGenerator;
  */
 public class Core {
 
-    public static final int OK = 0;
-    public static final int ERROR = 1;
-
-    public static int run(List<Student> students, Optional<List<String>> teacherGroups, Path outputFile)
+    public static void run(List<Student> students, Optional<List<String>> teacherGroups, Path outputFile)
             throws FileNotFoundException {
 
         try (PrintStream out = new PrintStream(outputFile.toFile())) {
 
-            var exitCode = run(students, teacherGroups, out);
+            run(students, teacherGroups, out);
             System.out.printf("%n'%s' file created successfully!!%n%n", outputFile);
 
-            return exitCode;
         }
     }
 
-    public static int run(List<Student> allStudents, Optional<List<String>> teacherGroups, PrintStream output) {
+    /**
+     * Runs the core logic of the application.
+     */
+    public static void run(List<Student> allStudents, Optional<List<String>> teacherGroups, PrintStream output) {
 
         // Precondition check
         if (teacherGroups.isPresent() && teacherGroups.get().isEmpty())
@@ -44,7 +43,6 @@ public class Core {
             CsvGenerator.writeCsv(allStudents, output);
         }
 
-        return OK;
     }
 
     // Filters the list of students to include only those whose group is in the teacher's groups list.
