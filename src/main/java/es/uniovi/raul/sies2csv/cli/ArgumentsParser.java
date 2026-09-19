@@ -9,18 +9,21 @@ import picocli.CommandLine.ParameterException;
 /** Parses and validates command line arguments. */
 public class ArgumentsParser {
 
+    public record ParseResult(Optional<Arguments> arguments, int exitCode) {
+    }
+
     /**
      * Parses command line args.
      * Prints usage, version, or errors as needed.
      *
      * @param args the command line arguments
-     * @return an Optional containing the parsed Arguments or empty if parsing failed
+     * @return the parsed arguments, if present, and the appropriate process exit code
      */
-    public static Optional<Arguments> parse(String[] args) {
+    public static ParseResult parse(String[] args) {
         return parse(args, System.out, System.err);
     }
 
-    public static Optional<Arguments> parse(String[] args, PrintStream out, PrintStream err) {
+    public static ParseResult parse(String[] args, PrintStream out, PrintStream err) {
 
         final Arguments arguments = new Arguments();
 
@@ -34,20 +37,20 @@ public class ArgumentsParser {
 
             if (picocli.isUsageHelpRequested()) {
                 picocli.usage(out);
-                return Optional.empty();
+                return new ParseResult(Optional.empty(), 0);
             }
 
             if (picocli.isVersionHelpRequested()) {
                 picocli.printVersionHelp(out);
-                return Optional.empty();
+                return new ParseResult(Optional.empty(), 0);
             }
 
-            return Optional.of(arguments);
+            return new ParseResult(Optional.of(arguments), 0);
 
         } catch (ParameterException ex) {
             System.err.printf("%n[Error] %s%n", ex.getMessage());
             picocli.usage(err);
-            return Optional.empty();
+            return new ParseResult(Optional.empty(), 1);
         }
     }
 

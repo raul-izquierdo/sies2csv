@@ -18,10 +18,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Optional<Arguments> argumentsOpt = ArgumentsParser.parse(args);
+        var parseResult = ArgumentsParser.parse(args);
+        Optional<Arguments> argumentsOpt = parseResult.arguments();
 
         if (argumentsOpt.isEmpty())
-            System.exit(Core.ERROR);
+            System.exit(parseResult.exitCode());
 
         int exitCode;
         try {
