@@ -1,6 +1,6 @@
 package es.uniovi.raul.sies2csv.cli;
 
-import java.io.PrintStream;
+import java.io.*;
 import java.util.Optional;
 
 import picocli.CommandLine;
@@ -11,6 +11,8 @@ public class ArgumentsParser {
 
     public record ParseResult(Optional<Arguments> arguments, int exitCode) {
     }
+
+    private static final String DEFAULT_SCHEDULE_FILE = "groups.csv";
 
     /**
      * Parses command line args.
@@ -45,6 +47,8 @@ public class ArgumentsParser {
                 return new ParseResult(Optional.empty(), 0);
             }
 
+            arguments.groupsFile = resolveScheduleFile(arguments.groupsFile);
+
             return new ParseResult(Optional.of(arguments), 0);
 
         } catch (ParameterException ex) {
@@ -52,6 +56,22 @@ public class ArgumentsParser {
             picocli.usage(err);
             return new ParseResult(Optional.empty(), 1);
         }
+    }
+
+    private static String resolveScheduleFile(String scheduleFile) {
+
+        // If provided, use it
+        if (scheduleFile != null)
+            return scheduleFile;
+
+        // If not provided, check if the default file exists
+        File file = new File(DEFAULT_SCHEDULE_FILE);
+        if (file.exists() && file.isFile()) {
+            System.out.printf(">> Default schedule file '%s' found.%n", DEFAULT_SCHEDULE_FILE);
+            return DEFAULT_SCHEDULE_FILE;
+        }
+
+        return null; // No schedule file provided and default does not exist
     }
 
 }

@@ -28,7 +28,7 @@ public class Core {
      */
     public static void run(List<Student> allStudents, Optional<List<String>> teacherGroups, PrintStream output) {
 
-        // Precondition check
+        // Precondition check. If there is a teacher's groups list, it must not be empty.
         if (teacherGroups.isPresent() && teacherGroups.get().isEmpty())
             throw new IllegalArgumentException("The teacher's groups list is empty. Please check the groups file.");
 
@@ -40,9 +40,13 @@ public class Core {
             CsvGenerator.writeCsv(filterStudentsByGroup(allStudents, teacherGroups.get()), output);
 
         } else {
+
+            System.out.println(
+                    """
+                            >> No teacher's groups file provided. Students won't be filtered by group and all students will be included in the output CSV file.
+                            """);
             CsvGenerator.writeCsv(allStudents, output);
         }
-
     }
 
     // Filters the list of students to include only those whose group is in the teacher's groups list.

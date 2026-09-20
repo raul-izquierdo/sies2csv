@@ -1,7 +1,7 @@
 package es.uniovi.raul.sies2csv.main;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Path;
 import java.util.*;
 
 import es.uniovi.raul.sies2csv.cli.*;
@@ -34,7 +34,7 @@ public class Main {
             exitCode = OK;
 
         } catch (Exception e) {
-            System.err.printf("%n[Error] %s%n", e.getMessage());
+            System.err.printf("%n[Error] %s%n", e);
             exitCode = ERROR;
         }
 
@@ -46,7 +46,7 @@ public class Main {
 
         // load...
         List<Student> allStudents = loadStudents(Path.of(arguments.studentsFile));
-        var teacherGroupsOpt = loadTeacherGroups(Path.of(arguments.groupsFile));
+        var teacherGroupsOpt = findGroup(arguments.groupsFile);
 
         // ... and run (now you understand the name of the method)
         Core.run(allStudents, teacherGroupsOpt, Path.of(arguments.outputFile));
@@ -67,34 +67,30 @@ public class Main {
     }
 
     /**
-     * Loads the teacher's groups from a file.
+     * If provided, loads the teacher's groups from the specified file. If not provided, returns an empty Optional.
      *
-     * @param groupsFile The path to the groups file.
-     * @return An Optional containing the list of teacher's groups, or empty if the file is not found.
+     * @param groupsFileName The path to the groups file.
+     * @return An Optional containing the list of teacher's groups, or empty if a file was not provided.
      */
-    private static Optional<List<String>> loadTeacherGroups(Path groupsFile)
+    private static Optional<List<String>> findGroup(String groupsFileName)
             throws IOException, InvalidGroupFormatException {
 
-        Optional<List<String>> teacherGroupsOpt;
-        try {
-            var groups = GroupsLoader.loadTeacherGroups(groupsFile);
+        if (groupsFileName == null || groupsFileName.isEmpty())
+            return Optional.empty();
 
-            // error si hay grupos duplicados
-            if (hasDuplicates(groups))
-                throw new InvalidGroupFormatException(
-                        "[ERROR] The teacher's groups list contains duplicates. Please check the groups file.");
+        var groups = GroupsLoader.loadTeacherGroups(Path.of(groupsFileName));
 
-            // error si no hay grupos
-            if (groups.isEmpty())
-                throw new InvalidGroupFormatException(
-                        "[ERROR] The teacher's groups list is empty. Please check the groups file.");
+        // error si hay grupos duplicados
+        if (hasDuplicates(groups))
+            throw new InvalidGroupFormatException(
+                    "[ERROR] The teacher's groups list contains duplicates. Please check the groups file.");
 
-            teacherGroupsOpt = Optional.of(groups);
+        // error si no hay grupos
+        if (groups.isEmpty())
+            throw new InvalidGroupFormatException(
+                    "[ERROR] The teacher's groups list is empty. Please check the groups file.");
 
-        } catch (NoSuchFileException e) {
-            teacherGroupsOpt = Optional.empty();
-        }
-        return teacherGroupsOpt;
+        return Optional.of(groups);
     }
 
     private static boolean hasDuplicates(List<String> groups) {

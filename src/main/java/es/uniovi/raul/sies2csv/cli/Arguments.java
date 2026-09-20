@@ -13,12 +13,8 @@ public class Arguments {
     @Option(names = "-z", defaultValue = "new-roster.csv", description = "The output file where the list of students will be saved.")
     public String outputFile;
 
-    @Option(names = "-g", defaultValue = "groups.csv", description = "The file listing the groups to be considered for the teacher. Groups not present in this file will not be considered.")
+    @Option(names = "-g", description = "The file listing the groups to be considered for the teacher. Groups not present in this file will not be considered.")
     public String groupsFile;
-
-    // @Option(names = { "-f",
-    //         "--schedule-file" }, description = "The file listing the groups to be considered for the teacher. Groups not present in this file will not be considered.")
-    // public String scheduleFile;
 
 }
 
