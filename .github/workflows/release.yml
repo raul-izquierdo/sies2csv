@@ -1,4 +1,6 @@
-# This workflow is specific to sies2csv. Do not use it as a template for other projects.
+#
+# IMPORTANT:  This workflow is specific to sies2csv. Do not use it as a template for other projects.
+#
 name: Build and Release Java Application
 
 on:
