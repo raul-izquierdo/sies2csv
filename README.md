@@ -101,7 +101,6 @@ Flags:
 ## Exit Codes
 
 The exit codes indicate the result of the command execution:
-
 - **0**: The command executed successfully.
 - **1**: An error occurred.
 
