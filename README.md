@@ -39,8 +39,8 @@ java -jar sies2csv.jar [flags] [sies-file]
 **sies-file** is the name of the excel file downloaded from SIES. Can be omitted if the file is named `alumnosMatriculados.xls`.
 
 Flags:
-- **-o [output-roster.csv]**: The name of the generated CSV file. If not provided, defaults to `new-roster.csv` (the name expected by _roster50.jar_).
-- **-s [schedule.csv]**: The file listing the groups to be considered for the teacher. Groups not present in this file will not be considered. If not provided, defaults to `schedule.csv`.
+- **-z [output-roster.csv]**: The name of the generated CSV file. If not provided, defaults to `new-roster.csv` (the name expected by _roster50.jar_).
+- **-g [groups.csv]**: The file listing the groups to be considered for the teacher. Groups not present in this file will not be considered. If not provided, defaults to `groups.csv`.
 - **-h, --help**: Show help.
 - **-V, --version**: Show version.
 
