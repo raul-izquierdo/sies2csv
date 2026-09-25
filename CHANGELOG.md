@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [2.0.0](https://github.com/raul-izquierdo/sies2csv/compare/v1.0.0...v2.0.0) - 2026/09/25
+
+### BREAKING CHANGES
+
+- fix: Flag letters were wrong.
+    - `-g` is now the flag for the groups file.
+    - `-z` is now the flag for the output file.
+
+### Added
+
+- feat: Improved groups file handling
+
+### Changed
+
+- docs: Update README
+- docs: Update comments in release.yml and pom.xml for clarity
+
+
 ## [1.0.0]
 
 
