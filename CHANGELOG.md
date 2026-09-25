@@ -35,7 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extracts each student's name, email address, and group into the `first_name`, `email`, and `section` fields.
     - When a group is provided:
         - Removes the prefix, retaining only the number.
-        - Converts the English-group prefix to a single `i`.
 - Reports data-quality issues in the Excel file, including students who are missing a name, email address, or group.
 - Filters records as follows:
     - Excludes:
